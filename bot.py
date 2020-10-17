@@ -55,6 +55,8 @@ async def setLineCount(ctx, *, number):
     fileOne.truncate(0)
     fileOne.seek(0)
     fileOne.write(number)
+    fileOne.close()
+    fileone = open("lineCount.txt","r+")
 
 @client.command()
 @cooldown(1, 86400, BucketType.user)
