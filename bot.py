@@ -59,7 +59,6 @@ async def setLineCount(ctx, *, number):
     fileone = open("lineCount.txt","r+")
 
 @client.command()
-@cooldown(1, 86400, BucketType.user)
 async def getSteamAccount(ctx, author):
     with open('steam_accounts.csv', mode='r') as csv_file:
         global fileOne
