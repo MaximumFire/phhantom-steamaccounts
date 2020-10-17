@@ -39,7 +39,7 @@ async def readFile(ctx):
     global fileOne
     global lineCount
     line_count = fileOne.read()
-    print("File read. contents are: " + lineCount)
+    print("File read. contents are: " + str(lineCount))
 
 @client.command()
 async def writeFile(ctx):
