@@ -31,55 +31,60 @@ async def on_message(message):
 @client.command()
 async def openFile(ctx):
     global fileOne
-    fileOne = open("lineCount.txt","r+")
-    print("File Opened")
+    if "dev" in [i.name.lower() for i in ctx.author.roles]:
+        fileOne = open("lineCount.txt","r+")
+        print("File Opened")
+    else:
+        await ctx.send("This command is only availiable for devs.")
 
 @client.command()
 async def readFile(ctx):
     global fileOne
     global lineCount
-    line_count = fileOne.read()
-    print("File read. contents are: " + str(lineCount))
-
-@client.command()
-async def writeFile(ctx):
-    global fileOne
-    global lineCount
-    fileOne.truncate(0)
-    fileOne.write(str(lineCount))
+    if "dev" in [i.name.lower() for i in ctx.author.roles]:
+        line_count = fileOne.read()
+        print("File read. contents are: " + str(lineCount))
+    else:
+        await ctx.send("This command is only availiable for devs.")
 
 @client.command()
 async def setLineCount(ctx, *, number):
     global line_count
     global fileOne
-    fileOne.truncate(0)
-    fileOne.seek(0)
-    fileOne.write(number)
-    fileOne.close()
-    fileone = open("lineCount.txt","r+")
-
-@client.command()
-async def getSteamAccount(ctx, author):
-    with open('steam_accounts.csv', mode='r') as csv_file:
-        global fileOne
-        global lineCount
-        fileOne.seek(0)
-        fileContents = fileOne.read(2)
-        print("fileContents is: " + fileContents)
-        lineCount = int(fileContents) + 1
-        print("lineCount is: " + str(lineCount))
-        csv_reader = csv.DictReader(csv_file)
-        loop = 0
-        for row in csv_reader:
-            loop = loop + 1
-            if loop == lineCount:
-                await ctx.author.send("Your username is: " + row["Username"])
-                await ctx.author.send("Your password is: " + row["Password"])
+    if "dev" in [i.name.lower() for i in ctx.author.roles]:
         fileOne.truncate(0)
         fileOne.seek(0)
-        fileOne.write(str(lineCount))
+        fileOne.write(number)
         fileOne.close()
-        fileOne = open("lineCount.txt","r+")
+        fileone = open("lineCount.txt","r+")
+    else:
+        await ctx.send("This command is only availiable for devs.")
+        
+@client.command()
+async def getSteamAccount(ctx, author):
+    global lineCount
+    global fileOne
+    if "dev" in [i.name.lower() for i in ctx.author.roles]:
+        with open('steam_accounts.csv', mode='r') as csv_file:
+            fileOne.seek(0)
+            fileContents = fileOne.read(2)
+            print("fileContents is: " + fileContents)
+            lineCount = int(fileContents) + 1
+            print("lineCount is: " + str(lineCount))
+            csv_reader = csv.DictReader(csv_file)
+            loop = 0
+            for row in csv_reader:
+                loop = loop + 1
+                if loop == lineCount:
+                    await ctx.author.send("Your username is: " + row["Username"])
+                    await ctx.author.send("Your password is: " + row["Password"])
+            fileOne.truncate(0)
+            fileOne.seek(0)
+            fileOne.write(str(lineCount))
+            fileOne.close()
+            fileOne = open("lineCount.txt","r+")
+    else:
+        await ctx.send("This command is only availiable for devs.")
 
 @getSteamAccount.error
 async def getSteamAccount_error(ctx, error):
@@ -97,7 +102,9 @@ async def checkLineCount(ctx):
 @client.command()
 async def closeFile(ctx):
     global fileOne
-    fileOne.close()
-    print("File Closed")
-
+    if "dev" in [i.name.lower() for i in ctx.author.roles]:
+        fileOne.close()
+        print("File Closed")
+    else:
+        await ctx.send("This command is only availiable for devs.")
 client.run(os.environ['discord_token'])
