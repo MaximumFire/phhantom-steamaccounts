@@ -92,6 +92,9 @@ async def getSteamAccount_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
         msg = 'This command has a cooldown, please try again in {:.2f}s'.format(error.retry_after)
         await ctx.send(msg)
+    elif isinstance(error, commands.MissingRequiredArgument):
+        if error.param.name == 'author':
+            await ctx.send("Please @ someone after the command. For example: '.getSteamAccount @MaximumFire'")
     else:
         raise error
 
