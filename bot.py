@@ -56,7 +56,7 @@ async def setLineCount(ctx, *, number):
         fileOne.seek(0)
         fileOne.write(number)
         fileOne.close()
-        fileone = open("lineCount.txt","r+")
+        fileOne = open("lineCount.txt","r+")
     else:
         await ctx.send("This command is only availiable for devs.")
         
