@@ -20,7 +20,7 @@ async def on_ready():
     print("Bot is online.")
     fileOne = open("lineCount.txt","r+")
     print("File Opened")
-    await bot.change_presence(activity=discord.Game(name="Type .help for help"))
+    await client.change_presence(activity=discord.Game(name="Type .help for help"))
 
 @client.event
 async def on_message(message):
