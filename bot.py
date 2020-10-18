@@ -94,7 +94,7 @@ async def getSteamAccount_error(ctx, error):
         await ctx.send(msg)
     elif isinstance(error, commands.MissingRequiredArgument):
         if error.param.name == 'author':
-            await ctx.send("Please @ someone after the command. For example: '.getSteamAccount @MaximumFire'")
+            await ctx.send("Please @ yourself after the command. For example: '.getSteamAccount @MaximumFire'")
     else:
         raise error
 
