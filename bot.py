@@ -27,11 +27,11 @@ async def on_ready():
 @client.command()
 async def openFile(ctx):
     global fileOne
-    if "dev" in [i.name.lower() for i in ctx.author.roles]:
+    if "owner" in [i.name.lower() for i in ctx.author.roles]:
         fileOne = open("lineCount.txt","r+")
         print("File Opened")
     else:
-        await ctx.send("This command is only availiable for devs.")
+        await ctx.send("This command is only availiable for Owners.")
         
 @client.command()
 async def help(ctx):
@@ -41,30 +41,30 @@ async def help(ctx):
 async def readFile(ctx):
     global fileOne
     global lineCount
-    if "dev" in [i.name.lower() for i in ctx.author.roles]:
+    if "owner" in [i.name.lower() for i in ctx.author.roles]:
         line_count = fileOne.read()
         print("File read. contents are: " + str(lineCount))
     else:
-        await ctx.send("This command is only availiable for devs.")
+        await ctx.send("This command is only availiable for Owners.")
 
 @client.command()
 async def setLineCount(ctx, *, number):
     global line_count
     global fileOne
-    if "dev" in [i.name.lower() for i in ctx.author.roles]:
+    if "owner" in [i.name.lower() for i in ctx.author.roles]:
         fileOne.truncate(0)
         fileOne.seek(0)
         fileOne.write(number)
         fileOne.close()
         fileOne = open("lineCount.txt","r+")
     else:
-        await ctx.send("This command is only availiable for devs.")
+        await ctx.send("This command is only availiable for Owners.")
         
 @client.command()
 async def getSteamAcc(ctx, author):
     global lineCount
     global fileOne
-    if "dev" in [i.name.lower() for i in ctx.author.roles]:
+    if "verified" in [i.name.lower() for i in ctx.author.roles]:
         with open('steam_accounts.csv', mode='r') as csv_file:
             fileOne.seek(0)
             fileContents = fileOne.read(2)
@@ -84,7 +84,7 @@ async def getSteamAcc(ctx, author):
             fileOne.close()
             fileOne = open("lineCount.txt","r+")
     else:
-        await ctx.send("This command is only availiable for devs.")
+        await ctx.send("This command is only availiable for @verified.")
 
 @getSteamAcc.error
 async def getSteamAccount_error(ctx, error):
@@ -105,9 +105,9 @@ async def checkLineCount(ctx):
 @client.command()
 async def closeFile(ctx):
     global fileOne
-    if "dev" in [i.name.lower() for i in ctx.author.roles]:
+    if "owner" in [i.name.lower() for i in ctx.author.roles]:
         fileOne.close()
         print("File Closed")
     else:
-        await ctx.send("This command is only availiable for devs.")
+        await ctx.send("This command is only availiable for Owners.")
 client.run(os.environ['discord_token'])
