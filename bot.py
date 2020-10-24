@@ -85,7 +85,7 @@ async def getSteamAcc(ctx, author):
     else:
         await ctx.send("This command is only availiable for devs.")
 
-@getSteamAccount.error
+@getSteamAcc.error
 async def getSteamAccount_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
         msg = 'This command has a cooldown, please try again in {:.2f}s'.format(error.retry_after)
