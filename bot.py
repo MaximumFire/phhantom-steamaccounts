@@ -22,12 +22,6 @@ async def on_ready():
     print("File Opened")
     await client.change_presence(activity=discord.Game(name="Type .help for help"))
 
-@client.event
-async def on_message(message):
-    await client.process_commands(message)
-    if message.channel.id == 749246836237271160:
-        await message.delete()
-
 #Commands
 @client.command()
 async def openFile(ctx):
