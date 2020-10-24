@@ -35,7 +35,7 @@ async def openFile(ctx):
         
 @client.command()
 async def help(ctx):
-    await ctx.send("Use the 'getSteamAcc @yourNameHere' to get an account")
+    await ctx.send("Use the '.getSteamAcc @yourNameHere' to get an account")
 
 @client.command()
 async def readFile(ctx):
