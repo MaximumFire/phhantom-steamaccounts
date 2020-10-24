@@ -31,6 +31,10 @@ async def openFile(ctx):
         print("File Opened")
     else:
         await ctx.send("This command is only availiable for devs.")
+        
+@client.command()
+async def Help(ctx):
+    ctx.send("Use the 'getSteamAcc @yourNameHere' to get an account")
 
 @client.command()
 async def readFile(ctx):
@@ -56,7 +60,7 @@ async def setLineCount(ctx, *, number):
         await ctx.send("This command is only availiable for devs.")
         
 @client.command()
-async def getSteamAccount(ctx, author):
+async def getSteamAcc(ctx, author):
     global lineCount
     global fileOne
     if "dev" in [i.name.lower() for i in ctx.author.roles]:
