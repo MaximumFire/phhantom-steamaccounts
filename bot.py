@@ -60,6 +60,7 @@ async def setLineCount(ctx, *, number):
         await ctx.send("This command is only availiable for devs.")
         
 @client.command()
+@cooldown(1, 86400, BucketType.user)
 async def getSteamAcc(ctx, author):
     global lineCount
     global fileOne
@@ -92,7 +93,7 @@ async def getSteamAccount_error(ctx, error):
         await ctx.send(msg)
     elif isinstance(error, commands.MissingRequiredArgument):
         if error.param.name == 'author':
-            await ctx.send("Please @ yourself after the command. For example: '.getSteamAccount @MaximumFire'")
+            await ctx.send("Please @ yourself after the command. For example: '.getSteamAcc @MaximumFire'")
     else:
         raise error
 
