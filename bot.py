@@ -21,7 +21,7 @@ async def on_ready():
     print("Bot is online.")
     fileOne = open("lineCount.txt","r+")
     print("File Opened")
-    await client.change_presence(activity=discord.Game(name="Type .Help for help"))
+    await client.change_presence(activity=discord.Game(name="Type .help for help"))
 
 #Commands
 @client.command()
@@ -34,7 +34,7 @@ async def openFile(ctx):
         await ctx.send("This command is only availiable for devs.")
         
 @client.command()
-async def Help(ctx):
+async def help(ctx):
     await ctx.send("Use the 'getSteamAcc @yourNameHere' to get an account")
 
 @client.command()
