@@ -8,6 +8,7 @@ from discord.ext.commands import cooldown
 
 intents = discord.Intents(messages = True, guilds = True, reactions = True, members = True, presences = True)
 client = commands.Bot(command_prefix = '.', intents = intents)
+client.remove_command('help')
 
 #Variables
 fileOne = None
