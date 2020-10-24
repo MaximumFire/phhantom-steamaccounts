@@ -60,7 +60,6 @@ async def setLineCount(ctx, *, number):
         await ctx.send("This command is only availiable for devs.")
         
 @client.command()
-@cooldown(1, 86400, BucketType.user)
 async def getSteamAcc(ctx, author):
     global lineCount
     global fileOne
