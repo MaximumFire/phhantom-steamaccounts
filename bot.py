@@ -76,8 +76,11 @@ async def getSteamAcc(ctx, author):
             for row in csv_reader:
                 loop = loop + 1
                 if loop == lineCount:
-                    await ctx.author.send("Your username is: " + row["Username"])
-                    await ctx.author.send("Your password is: " + row["Password"])
+                    if row["Username"] = "":
+                        await ctx.send("There are no more accounts availiable. Contact @MaximumFire for help.")
+                    else:
+                        await ctx.author.send("Your username is: " + row["Username"])
+                        await ctx.author.send("Your password is: " + row["Password"])
             fileOne.truncate(0)
             fileOne.seek(0)
             fileOne.write(str(lineCount))
