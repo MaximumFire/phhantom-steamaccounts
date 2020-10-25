@@ -76,7 +76,7 @@ async def getSteamAcc(ctx, author):
             for row in csv_reader:
                 loop = loop + 1
                 if loop == lineCount:
-                    if row["Username"] = "":
+                    if row["Username"] == "":
                         await ctx.send("There are no more accounts availiable. Contact @MaximumFire for help.")
                     else:
                         await ctx.author.send("Your username is: " + row["Username"])
