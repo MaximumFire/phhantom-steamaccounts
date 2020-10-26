@@ -57,6 +57,7 @@ async def setLineCount(ctx, *, number):
         fileOne.write(number)
         fileOne.close()
         fileOne = open("lineCount.txt","r+")
+        lineCount = fileOne.read()
     else:
         await ctx.send("This command is only availiable for Owners.")
         
@@ -68,7 +69,7 @@ async def getSteamAcc(ctx, author):
     if "verified" in [i.name.lower() for i in ctx.author.roles]:
         with open('steam_accounts.csv', mode='r') as csv_file:
             fileOne.seek(0)
-            fileContents = fileOne.read(2)
+            fileContents = fileOne.read()
             print("fileContents is: " + fileContents)
             lineCount = int(fileContents) + 1
             print("lineCount is: " + str(lineCount))
