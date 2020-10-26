@@ -61,10 +61,11 @@ async def setLineCount(ctx, *, number):
         await ctx.send("This command is only availiable for Owners.")
         
 @client.command()
+@cooldown(1, 3600, BucketType.user)
 async def getSteamAcc(ctx, author):
     global lineCount
     global fileOne
-    if "owner" in [i.name.lower() for i in ctx.author.roles]:
+    if "verified" in [i.name.lower() for i in ctx.author.roles]:
         with open('steam_accounts.csv', mode='r') as csv_file:
             fileOne.seek(0)
             fileContents = fileOne.read(2)
@@ -87,18 +88,20 @@ async def getSteamAcc(ctx, author):
             fileOne.close()
             fileOne = open("lineCount.txt","r+")
     else:
-        await ctx.send("This command is only availiable for Owners.")
+        await ctx.send("This command is only availiable for @verified")
 
 @getSteamAcc.error
-async def getSteamAccount_error(ctx, error):
+async def getSteamAcc_error(ctx, error):
     if isinstance(error, commands.CommandOnCooldown):
         msg = 'This command has a cooldown, please try again in {:.2f}s'.format(error.retry_after)
         await ctx.send(msg)
     elif isinstance(error, commands.MissingRequiredArgument):
         if error.param.name == 'author':
             await ctx.send("Please @ yourself after the command. For example: '.getSteamAcc @MaximumFire'")
+            getSteamAcc.reset_cooldown(ctx)
     else:
         raise error
+        getSteamAcc.reset_cooldown(ctx)
 
 @client.command()
 async def checkLineCount(ctx):
