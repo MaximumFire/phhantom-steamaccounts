@@ -107,6 +107,7 @@ async def getSteamAcc_error(ctx, error):
 async def checkLineCount(ctx):
     global line_count
     print("line_count is: " + str(lineCount))
+    ctx.send("lineCount is: " + str(lineCount))
 
 @client.command()
 async def closeFile(ctx):
