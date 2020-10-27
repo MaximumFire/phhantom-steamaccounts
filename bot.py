@@ -22,6 +22,9 @@ lineCount = None
 @client.event
 async def on_ready():
     global fileOne
+    global lineCount
+    global con
+    global cur
     print("Bot is online.")
     fileOne = open("lineCount.txt","r+")
     print("File Opened")
@@ -133,8 +136,9 @@ async def getTableData(ctx):
     cur.execute("select variable, value from variables")
     rows = cur.fetchall()
     for r in rows:
-        dataOne = r[0]
         dataTwo = r[1]
-        await ctx.send("dataOne is " + str(dataOne) + " and dataTwo is " + str(dataTwo))
+        await ctx.send("dataTwo is " + str(dataTwo))
         
 client.run(os.environ['discord_token'])
+cur.close()
+con.close()
