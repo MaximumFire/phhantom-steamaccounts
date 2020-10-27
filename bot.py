@@ -46,14 +46,14 @@ async def readFile(ctx):
     global fileOne
     global lineCount
     if "owner" in [i.name.lower() for i in ctx.author.roles]:
-        line_count = fileOne.read()
+        lineCount = fileOne.read()
         print("File read. contents are: " + str(lineCount))
     else:
         await ctx.send("This command is only availiable for Owners.")
 
 @client.command()
 async def setLineCount(ctx, *, number):
-    global line_count
+    global lineCount
     global fileOne
     if "owner" in [i.name.lower() for i in ctx.author.roles]:
         fileOne.truncate(0)
@@ -61,6 +61,7 @@ async def setLineCount(ctx, *, number):
         fileOne.write(number)
         fileOne.close()
         fileOne = open("lineCount.txt","r+")
+        lineCount = fileOne.read()
     else:
         await ctx.send("This command is only availiable for Owners.")
         
@@ -72,7 +73,7 @@ async def getSteamAcc(ctx, author):
     if "verified" in [i.name.lower() for i in ctx.author.roles]:
         with open('steam_accounts.csv', mode='r') as csv_file:
             fileOne.seek(0)
-            fileContents = fileOne.read(2)
+            fileContents = fileOne.read()
             print("fileContents is: " + fileContents)
             lineCount = int(fileContents) + 1
             print("lineCount is: " + str(lineCount))
@@ -91,6 +92,9 @@ async def getSteamAcc(ctx, author):
             fileOne.write(str(lineCount))
             fileOne.close()
             fileOne = open("lineCount.txt","r+")
+            lineCount = fileOne.read()
+            channel = client.get_channel(770424797205102643)
+            await channel.send("lineCount is: " + str(lineCount))
     else:
         await ctx.send("This command is only availiable for @verified")
 
@@ -111,6 +115,7 @@ async def getSteamAcc_error(ctx, error):
 async def checkLineCount(ctx):
     global line_count
     print("line_count is: " + str(lineCount))
+    await ctx.send("lineCount is: " + str(lineCount))
 
 @client.command()
 async def closeFile(ctx):
