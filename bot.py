@@ -29,30 +29,16 @@ async def on_ready():
     fileOne = open("lineCount.txt","r+")
     print("File Opened")
     await client.change_presence(activity=discord.Game(name="Type .help for help"))
+    cur.execute("select variable, value from variables")
+    rows = cur.fetchall()
+    for r in rows:
+        lineCount = r[1]
+        print("lineCount has been set to: " + lineCount)
 
 #Commands
 @client.command()
-async def openFile(ctx):
-    global fileOne
-    if "owner" in [i.name.lower() for i in ctx.author.roles]:
-        fileOne = open("lineCount.txt","r+")
-        print("File Opened")
-    else:
-        await ctx.send("This command is only availiable for Owners.")
-        
-@client.command()
 async def help(ctx):
     await ctx.send("Use the '.getSteamAcc @yourNameHere' to get an account")
-
-@client.command()
-async def readFile(ctx):
-    global fileOne
-    global lineCount
-    if "owner" in [i.name.lower() for i in ctx.author.roles]:
-        lineCount = fileOne.read()
-        print("File read. contents are: " + str(lineCount))
-    else:
-        await ctx.send("This command is only availiable for Owners.")
 
 @client.command()
 async def setLineCount(ctx, *, number):
@@ -119,15 +105,6 @@ async def checkLineCount(ctx):
     global line_count
     print("line_count is: " + str(lineCount))
     await ctx.send("lineCount is: " + str(lineCount))
-
-@client.command()
-async def closeFile(ctx):
-    global fileOne
-    if "owner" in [i.name.lower() for i in ctx.author.roles]:
-        fileOne.close()
-        print("File Closed")
-    else:
-        await ctx.send("This command is only availiable for Owners.")
 
 @client.command()
 async def getTableData(ctx):
