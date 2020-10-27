@@ -33,7 +33,7 @@ async def on_ready():
     rows = cur.fetchall()
     for r in rows:
         lineCount = r[1]
-        print("lineCount has been set to: " + lineCount)
+        print("lineCount has been set to: " + str(lineCount))
 
 #Commands
 @client.command()
