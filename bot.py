@@ -5,10 +5,14 @@ import os
 import csv
 from discord.ext.commands import BucketType
 from discord.ext.commands import cooldown
+import psycopg2
 
 intents = discord.Intents(messages = True, guilds = True, reactions = True, members = True, presences = True)
 client = commands.Bot(command_prefix = '.', intents = intents)
 client.remove_command('help')
+DATABASE_URL = os.environ['DATABASE_URL']
+con = psycopg2.connect(DATABASE_URL, sslmode='require')
+cur = con.cursor()
 
 #Variables
 fileOne = None
@@ -116,4 +120,16 @@ async def closeFile(ctx):
         print("File Closed")
     else:
         await ctx.send("This command is only availiable for Owners.")
+
+@client.command()
+async def getTableData(ctx):
+    global con
+    global cur
+    cur.execute("select variable, value from variables")
+    rows = cur.fetchall()
+    for r in rows:
+        dataOne = r[0]
+        dataTwo = r[1]
+        await ctx.send("dataOne is " + str(dataOne) + " and dataTwo is " + str(dataTwo))
+        
 client.run(os.environ['discord_token'])
