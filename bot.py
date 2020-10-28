@@ -59,8 +59,8 @@ async def setLineCount(ctx, *, number):
     tableData = cur.fetchall()
     for row in tableData:
         lineCount = row[1]
-    await ctx.send("lineCount has been updated to: " + lineCount)
-    print("lineCount is: " + lineCount)
+    await ctx.send("lineCount has been updated to: " + str(lineCount))
+    print("lineCount is: " + str(lineCount))
     con.commit()
 
 @client.command()
