@@ -39,6 +39,7 @@ async def on_ready():
             "insert into steamAccounts values (%s, %s, %s)",
             row)
     print("steam accounts imported")
+    con.commit()
     
 
 #Commands
@@ -60,6 +61,7 @@ async def setLineCount(ctx, *, number):
         lineCount = row[1]
     await ctx.send("lineCount has been updated to: " + lineCount)
     print("lineCount is: " + lineCount)
+    con.commit()
 
 @client.command()
 async def checkLineCount(ctx):
@@ -68,5 +70,6 @@ async def checkLineCount(ctx):
     await ctx.send("lineCount is: " + str(lineCount))
     
 client.run(os.environ['discord_token'])
+con.commit()
 cur.close()
 con.close()
