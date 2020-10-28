@@ -82,6 +82,11 @@ async def getSteamAcc_error(ctx, error):
     else:
         raise error
         getSteamAcc.reset_cooldown(ctx)
+
+@client.command()
+async def clearCooldown(ctx):
+    getSteamAcc.reset_cooldown(ctx)
+    await ctx.send("Cooldown reset.")
         
 @client.command()
 async def setLineCount(ctx, *, number):
