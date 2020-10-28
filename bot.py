@@ -85,30 +85,39 @@ async def getSteamAcc_error(ctx, error):
 
 @client.command()
 async def clearCooldown(ctx):
-    getSteamAcc.reset_cooldown(ctx)
-    await ctx.send("Cooldown reset.")
+    if "owner" in [i.name.lower() for i in ctx.author.roles]:
+        getSteamAcc.reset_cooldown(ctx)
+        await ctx.send("Cooldown reset.")
+    else:
+        await ctx.send("This command is only for owner.")
         
 @client.command()
 async def setLineCount(ctx, *, number):
-    global lineCount
-    global con
-    global cur
-    cur.execute("select * from variables")
-    newLineCount = number
-    cur.execute("update variables set value = %s where variable = 'lineCount'", [newLineCount])
-    cur.execute("select * from variables")
-    tableData = cur.fetchall()
-    for row in tableData:
-        lineCount = row[1]
-    await ctx.send("lineCount has been updated to: " + str(lineCount))
-    print("lineCount is: " + str(lineCount))
-    con.commit()
+    if "owner" in [i.name.lower() for i in ctx.author.roles]:
+        global lineCount
+        global con
+        global cur
+        cur.execute("select * from variables")
+        newLineCount = number
+        cur.execute("update variables set value = %s where variable = 'lineCount'", [newLineCount])
+        cur.execute("select * from variables")
+        tableData = cur.fetchall()
+        for row in tableData:
+            lineCount = row[1]
+        await ctx.send("lineCount has been updated to: " + str(lineCount))
+        print("lineCount is: " + str(lineCount))
+        con.commit()
+    else:
+        await ctx.send("This command is only for owner.")
 
 @client.command()
 async def checkLineCount(ctx):
-    global line_count
-    print("line_count is: " + str(lineCount))
-    await ctx.send("lineCount is: " + str(lineCount))
+    if "owner" in [i.name.lower() for i in ctx.author.roles]:
+        global line_count
+        print("line_count is: " + str(lineCount))
+        await ctx.send("lineCount is: " + str(lineCount))
+    else:
+        await ctx.send("This command is only for owner.")
     
 client.run(os.environ['discord_token'])
 con.commit()
