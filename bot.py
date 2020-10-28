@@ -48,6 +48,7 @@ async def help(ctx):
     await ctx.send("Use the '.getSteamAcc @yourNameHere' to get an account")
 
 @client.command()
+@cooldown(1, 3600, BucketType.user)
 async def getSteamAcc(ctx, author):
     global lineCount
     global con
