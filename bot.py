@@ -15,20 +15,31 @@ con = psycopg2.connect(DATABASE_URL, sslmode='require')
 cur = con.cursor()
 
 #Variables
-fileOne = None
 lineCount = None
 
 #Events
 @client.event
 async def on_ready():
-    global fileOne
     global lineCount
     global con
     global cur
     print("Bot is online.")
-    fileOne = open("lineCount.txt","r+")
-    print("File Opened")
     await client.change_presence(activity=discord.Game(name="Type .help for help"))
+    cur.execute("select * from variables")
+    tableData = cur.fetchall()
+    for row in tableData:
+        lineCount = row[1]
+    print("lineCount has been set to: " + str(lineCount))
+    cur.execute("drop table if exists steamAccounts")
+    cur.execute("create table steamAccounts (id int, username varchar(50), password varchar(50))")
+    with open('steam_accounts.csv', 'r') as f:
+        reader = csv.reader(f)
+        for row in reader:
+            cur.execute(
+            "insert into steamAccounts values (%s, %s, %s)",
+            row)
+    print("steam accounts imported")
+    
 
 #Commands
 @client.command()
@@ -38,79 +49,26 @@ async def help(ctx):
 @client.command()
 async def setLineCount(ctx, *, number):
     global lineCount
-    global fileOne
-    if "owner" in [i.name.lower() for i in ctx.author.roles]:
-        fileOne.truncate(0)
-        fileOne.seek(0)
-        fileOne.write(number)
-        fileOne.close()
-        fileOne = open("lineCount.txt","r+")
-        lineCount = fileOne.read()
+    global con
+    global cur
+    cur.execute("select * from variables")
+    newLineCount = number
+    cur.execute("update variables set value = %s where variable = 'lineCount'", [newLineCount])
+    cur.execute("select * from variables")
+    tableData = cur.fetchall()
+    for row in tableData:
+        lineCount = row[1]
+    await ctx.send("lineCount has been updated to: " + lineCount)
+    print("lineCount is: " + lineCount)
     else:
         await ctx.send("This command is only availiable for Owners.")
-        
-@client.command()
-@cooldown(1, 3600, BucketType.user)
-async def getSteamAcc(ctx, author):
-    global lineCount
-    global fileOne
-    if "verified" in [i.name.lower() for i in ctx.author.roles]:
-        with open('steam_accounts.csv', mode='r') as csv_file:
-            fileOne.seek(0)
-            fileContents = fileOne.read()
-            print("fileContents is: " + fileContents)
-            lineCount = int(fileContents) + 1
-            print("lineCount is: " + str(lineCount))
-            csv_reader = csv.DictReader(csv_file)
-            loop = 0
-            for row in csv_reader:
-                loop = loop + 1
-                if loop == lineCount:
-                    if row["Username"] == "":
-                        await ctx.send("There are no more accounts availiable. Contact @MaximumFire for help.")
-                    else:
-                        await ctx.author.send("Your username is: " + row["Username"])
-                        await ctx.author.send("Your password is: " + row["Password"])
-            fileOne.truncate(0)
-            fileOne.seek(0)
-            fileOne.write(str(lineCount))
-            fileOne.close()
-            fileOne = open("lineCount.txt","r+")
-            lineCount = fileOne.read()
-            channel = client.get_channel(770424797205102643)
-            await channel.send("lineCount is: " + str(lineCount))
-    else:
-        await ctx.send("This command is only availiable for @verified")
-
-@getSteamAcc.error
-async def getSteamAcc_error(ctx, error):
-    if isinstance(error, commands.CommandOnCooldown):
-        msg = 'This command has a cooldown, please try again in {:.2f}s'.format(error.retry_after)
-        await ctx.send(msg)
-    elif isinstance(error, commands.MissingRequiredArgument):
-        if error.param.name == 'author':
-            await ctx.send("Please @ yourself after the command. For example: '.getSteamAcc @MaximumFire'")
-            getSteamAcc.reset_cooldown(ctx)
-    else:
-        raise error
-        getSteamAcc.reset_cooldown(ctx)
 
 @client.command()
 async def checkLineCount(ctx):
     global line_count
     print("line_count is: " + str(lineCount))
     await ctx.send("lineCount is: " + str(lineCount))
-
-@client.command()
-async def getTableData(ctx):
-    global con
-    global cur
-    cur.execute("select variable, value from variables")
-    rows = cur.fetchall()
-    for r in rows:
-        dataTwo = r[1]
-        await ctx.send("dataTwo is " + str(dataTwo))
-        
+    
 client.run(os.environ['discord_token'])
 cur.close()
 con.close()
