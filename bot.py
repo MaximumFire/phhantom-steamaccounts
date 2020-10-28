@@ -60,8 +60,6 @@ async def setLineCount(ctx, *, number):
         lineCount = row[1]
     await ctx.send("lineCount has been updated to: " + lineCount)
     print("lineCount is: " + lineCount)
-    else:
-        await ctx.send("This command is only availiable for Owners.")
 
 @client.command()
 async def checkLineCount(ctx):
