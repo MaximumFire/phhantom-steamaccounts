@@ -29,11 +29,6 @@ async def on_ready():
     fileOne = open("lineCount.txt","r+")
     print("File Opened")
     await client.change_presence(activity=discord.Game(name="Type .help for help"))
-    cur.execute("select variable, value from variables")
-    rows = cur.fetchall()
-    for r in rows:
-        lineCount = r[1]
-        print("lineCount has been set to: " + str(lineCount))
 
 #Commands
 @client.command()
