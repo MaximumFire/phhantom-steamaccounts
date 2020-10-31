@@ -74,8 +74,6 @@ async def getSteamAcc(ctx, author):
         tableData = cur.fetchall()
         for row in tableData:
             lineCount = row[1]
-        await ctx.send("lineCount has been updated to: " + str(lineCount))
-        print("lineCount is: " + str(lineCount))
         con.commit()
     else:
         await ctx.send("This Command is only availiable for @verified")
