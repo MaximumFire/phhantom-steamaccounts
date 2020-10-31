@@ -67,6 +67,16 @@ async def getSteamAcc(ctx, author):
                 else:
                     await ctx.author.send("Your username is: " + row[1])
                     await ctx.author.send("Your password is: " + row[2])
+        cur.execute("select * from variables")
+        newLineCount = lineCount
+        cur.execute("update variables set value = %s where variable = 'lineCount'", [newLineCount])
+        cur.execute("select * from variables")
+        tableData = cur.fetchall()
+        for row in tableData:
+            lineCount = row[1]
+        await ctx.send("lineCount has been updated to: " + str(lineCount))
+        print("lineCount is: " + str(lineCount))
+        con.commit()
     else:
         await ctx.send("This Command is only availiable for @verified")
 
